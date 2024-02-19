@@ -38,6 +38,7 @@ public class SectionService {
     public void addSection(Line line, SectionRequest sectionRequest) {
         Section requestSection = validSection(sectionRequest);
         Section existingSection = sectionRepository.findByUpStation(requestSection.getUpStation()).orElse(null);
+        requestSection = sectionRepository.save(requestSection);
         if(existingSection != null){
             requestSection.validMiddleSection(existingSection);
             addMiddleSection(line, requestSection, existingSection);
@@ -50,6 +51,10 @@ public class SectionService {
             return;
         }
 
+        Section prevSection = sectionRepository.findByDownStation(requestSection.getUpStation()).orElse(null);
+        if(prevSection != null){
+            prevSection.changeNextSection(requestSection);
+        }
         line.addEndSection(requestSection);
     }
 
@@ -85,5 +90,28 @@ public class SectionService {
 
         //신규 구간 추가
         line.addMiddleSection(requestSection);
+    }
+
+    public void deleteSection(Line line, Station deleteStation) {
+        Section leftStationSection = sectionRepository.findByDownStation(deleteStation).orElse(null); //A-B구간
+        Section rightStationSection = sectionRepository.findByUpStation(deleteStation).orElse(null); //B-C구간
+
+        if(rightStationSection != null) { //삭제역 기준 오른쪽 구간이 존재할 때 (마지막 구간이 아닐 때)
+            //B-C구간의 상행역을 A로 변경, 구간 거리 수정
+            rightStationSection.changeUpStationAndDistance(leftStationSection);
+
+            //A-B구간 삭제
+            line.removeSection(leftStationSection);
+
+            //leftStationSection의 이전 구간 nextSectionId를 rightStationSection Id로 변경
+            Section prevSection = sectionRepository.findByDownStation(leftStationSection.getUpStation()).orElse(null);
+            if(prevSection != null) {
+                prevSection.changeNextSection(rightStationSection);
+            }
+        }
+        else {
+            line.deleteDownSection(deleteStation);
+        }
+
     }
 }

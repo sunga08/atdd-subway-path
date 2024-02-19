@@ -95,6 +95,11 @@ public class Section {
         }
     }
 
+    public void changeUpStationAndDistance(Section section) {
+        this.upStation = section.getUpStation();
+        this.distance += section.distance;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,4 +112,5 @@ public class Section {
     public int hashCode() {
         return Objects.hash(getId(), getUpStation(), getDownStation(), getDistance(), getLine(), nextSectionId);
     }
+
 }

@@ -67,7 +67,6 @@ public class LineService {
         Station station = stationRepository.findById(deleteStationId).orElseThrow(
                 () -> new BadRequestException("존재하지 않는 역 입니다.")
         );
-
-        line.deleteDownSection(station);
+        sectionService.deleteSection(line, station);
     }
 }
