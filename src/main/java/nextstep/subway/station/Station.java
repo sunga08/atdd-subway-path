@@ -35,13 +35,13 @@ public class Station {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+//        if (o == null || getClass() != o.getClass()) return false;
         Station station = (Station) o;
-        return Objects.equals(getId(), station.getId()) && Objects.equals(getName(), station.getName());
+        return Objects.equals(id, station.getId()) && Objects.equals(name, station.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName());
+        return Objects.hash(id, name);
     }
 }
