@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Embeddable
 public class Sections {
@@ -42,32 +40,6 @@ public class Sections {
         stations = new ArrayList<>(new HashSet<>(stations));
 
         return stations;
-    }
-
-    public List<Section> getSortedSections() {
-        Section firstSection = getFirstSection();
-
-        List<Section> sortedSections =
-                Stream.iterate(firstSection, section -> sections.stream()
-                                .filter(nextSection -> section.getDownStation().equals(nextSection.getUpStation()))
-                                .findFirst()
-                                .orElse(null))
-                        .takeWhile(Objects::nonNull)
-                        .collect(Collectors.toList());
-
-        return sortedSections;
-    }
-
-    private Section getFirstSection() {
-        if (this.sections.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-
-        return sections.stream()
-                .filter(section -> sections.stream()
-                        .noneMatch(nextSection -> section.getUpStation().equals(nextSection.getDownStation())))
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
     }
 
     public void addSection(Line line, Section requestSection) {
