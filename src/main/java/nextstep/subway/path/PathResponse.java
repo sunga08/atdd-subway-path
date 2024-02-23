@@ -4,7 +4,6 @@ import nextstep.subway.station.Station;
 import nextstep.subway.station.StationResponse;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PathResponse {
@@ -26,7 +25,7 @@ public class PathResponse {
         return distance;
     }
 
-    public static PathResponse of(List<Station> stations, int distance) {
+    public static PathResponse createResponse(List<Station> stations, int distance) {
         return new PathResponse(
                 stations.stream()
                         .map(StationResponse::new)

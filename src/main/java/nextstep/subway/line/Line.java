@@ -49,10 +49,6 @@ public class Line {
         return sections.getSections();
     }
 
-    public List<Section> getSortedSectionList() {
-        return sections.getSortedSections();
-    }
-
     public List<Station> getStations() {
         return sections.getStations();
     }
