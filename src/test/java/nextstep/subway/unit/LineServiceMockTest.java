@@ -30,11 +30,6 @@ public class LineServiceMockTest {
     private LineRepository lineRepository;
     @Mock
     private StationRepository stationRepository;
-    @Mock
-    private SectionRepository sectionRepository;
-
-    @InjectMocks
-    private SectionService sectionService;
 
     @InjectMocks
     private LineService lineService;
@@ -65,8 +60,6 @@ public class LineServiceMockTest {
         Station 삼성역 = new Station(3L, "삼성역");
 
         when(lineRepository.findById(이호선.getId())).thenReturn(Optional.of(이호선));
-//        when(stationRepository.findById(강남역.getId())).thenReturn(Optional.of(강남역));
-//        when(stationRepository.findById(선릉역.getId())).thenReturn(Optional.of(선릉역));
         when(stationRepository.findById(삼성역.getId())).thenReturn(Optional.of(삼성역));
 
         Section 강남_선릉_구간 = new Section(1L, 강남역, 선릉역,7);
@@ -74,9 +67,6 @@ public class LineServiceMockTest {
 
         이호선.getSectionList().add(강남_선릉_구간);
         이호선.getSectionList().add(선릉_삼성_구간);
-
-        //sectionService.addSection(이호선, new SectionRequest(강남역.getId(), 선릉역.getId(), 7));
-        //sectionService.addSection(이호선,  new SectionRequest(선릉역.getId(), 삼성역.getId(), 3));
 
         //when
         lineService.deleteSection(이호선.getId(), 삼성역.getId());
